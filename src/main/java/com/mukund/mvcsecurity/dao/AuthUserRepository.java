@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.mukund.mvcsecurity.entitiy.AuthUser;
+import com.mukund.mvcsecurity.entity.AuthUser;
 
 /**
  * Repository interface for AuthUser

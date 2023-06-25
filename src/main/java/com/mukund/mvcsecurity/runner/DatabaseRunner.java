@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.mukund.mvcsecurity.dao.AuthUserRepository;
-import com.mukund.mvcsecurity.entitiy.AuthUser;
+import com.mukund.mvcsecurity.entity.AuthUser;
 
 @Order(value = 1)
 @Component

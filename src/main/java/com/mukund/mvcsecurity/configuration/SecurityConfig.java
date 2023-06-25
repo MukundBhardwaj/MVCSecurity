@@ -36,10 +36,13 @@ public class SecurityConfig {
      * 
      * @param userDetailsService {@code UserDetailsService} Service Object used for
      *                           Spring Security
+     * @param passwordEncoder    {@code PasswordEncoder} Object used for password
+     *                           matching
      * @return {@code AuthenticationProvider} default authentication provider object
      */
-    AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(getEncoder());
+    AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(passwordEncoder);
         authenticationProvider.setUserDetailsService(userDetailsService);
         return authenticationProvider;
     }

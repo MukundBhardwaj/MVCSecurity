@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mukund.mvcsecurity.dao.AuthUserRepository;
 import com.mukund.mvcsecurity.dto.AuthUserDTO;
-import com.mukund.mvcsecurity.entitiy.AuthUser;
+import com.mukund.mvcsecurity.entity.AuthUser;
 import com.mukund.mvcsecurity.exceptionhandler.ResourceNotFoundException;
 
 import jakarta.validation.Valid;

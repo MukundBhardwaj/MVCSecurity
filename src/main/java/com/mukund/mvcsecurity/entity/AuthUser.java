@@ -1,4 +1,4 @@
-package com.mukund.mvcsecurity.entitiy;
+package com.mukund.mvcsecurity.entity;
 
 import java.util.UUID;
 
