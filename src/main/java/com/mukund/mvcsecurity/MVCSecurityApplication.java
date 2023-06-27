@@ -8,8 +8,6 @@ public class MVCSecurityApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MVCSecurityApplication.class, args);
-
-		
 	}
 
 }
