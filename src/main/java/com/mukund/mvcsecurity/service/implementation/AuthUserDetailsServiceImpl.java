@@ -35,21 +35,25 @@ public class AuthUserDetailsServiceImpl implements AuthUserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " doesn't exist"));
     }
 
+    @Override
     public AuthUserDetails createUser(AuthUserDTO.CreateUserDTO authUserDTO) {
         return authUserRepository
                 .save(new AuthUser(null, authUserDTO.name(), authUserDTO.email(), authUserDTO.password(), "ROLE_USER",
                         authUserDTO.active()));
     }
 
+    @Override
     public List<? extends AuthUserDetails> findAllUsers() {
         return authUserRepository.findAll();
     }
 
+    @Override
     public AuthUserDetails getUserByID(UUID id) throws ResourceNotFoundException {
         return authUserRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with ID - " + id + " not found"));
     }
 
+    @Override
     public AuthUserDetails updateUser(UUID id, AuthUserDTO.UpdateUserDTO authUserDTO) throws ResourceNotFoundException {
         AuthUser authUser = authUserRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with ID - " + id + " not found"));
@@ -59,6 +63,7 @@ public class AuthUserDetailsServiceImpl implements AuthUserDetailsService {
         return authUserRepository.save(authUser);
     }
 
+    @Override
     public void deleteUserByID(UUID id) throws ResourceNotFoundException {
         if (authUserRepository.existsById(id))
             authUserRepository.deleteById(id);
