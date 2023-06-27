@@ -16,11 +16,11 @@ import com.mukund.mvcsecurity.entity.AuthUser;
 public interface AuthUserRepository extends JpaRepository<AuthUser, UUID> {
 
     /**
-     * Method to find record by email
+     * Method to find record by username
      * 
-     * @param email {@code String} email of the user
+     * @param username {@code String} username of the user
      * @return {@code Optional<AuthUser>} AuthUser Object
      */
-    public Optional<AuthUser> findByEmail(String email);
+    public Optional<AuthUser> findByUsername(String username);
 
 }

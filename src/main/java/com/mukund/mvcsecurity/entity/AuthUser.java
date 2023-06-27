@@ -1,10 +1,16 @@
 package com.mukund.mvcsecurity.entity;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.mukund.mvcsecurity.model.AuthUserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +29,7 @@ import jakarta.validation.constraints.Size;
  * @since 1.0
  * @author Mukund Bhardwaj
  */
-public class AuthUser {
+public class AuthUser implements AuthUserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -36,7 +42,7 @@ public class AuthUser {
     @Size(min = 3, max = 50)
     @Column(name = "email", nullable = false, unique = true)
     @JsonProperty(access = Access.READ_ONLY)
-    private String email;
+    private String username;
 
     @Size(min = 3, max = 72)
     @Column(name = "password", nullable = false)
@@ -49,54 +55,86 @@ public class AuthUser {
     private String role;
 
     @Column(name = "active", nullable = false)
-    private Boolean active;
+    private Boolean enabled;
 
+    @Override
     public UUID getId() {
         return id;
     }
 
+    @Override
     public void setId(UUID id) {
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public void setUsername(String email) {
+        this.username = email;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
 
+    @Override
     public void setPassword(String password) {
         this.password = password;
     }
 
+    @Override
     public String getRole() {
         return role;
     }
 
+    @Override
     public void setRole(String role) {
         this.role = role;
     }
 
-    public Boolean getActive() {
-        return active;
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    @Override
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
     public AuthUser() {
@@ -105,16 +143,16 @@ public class AuthUser {
     public AuthUser(UUID id, String name, String email, String password, String role, Boolean active) {
         this.id = id;
         this.name = name;
-        this.email = email;
+        this.username = email;
         this.password = password;
         this.role = role;
-        this.active = active;
+        this.enabled = active;
     }
 
     @Override
     public String toString() {
-        return "AuthUser [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", role="
-                + role + ", active=" + active + "]";
+        return "AuthUser [id=" + id + ", name=" + name + ", email=" + username + ", password=" + password + ", role="
+                + role + ", active=" + enabled + "]";
     }
 
     @Override
@@ -122,7 +160,7 @@ public class AuthUser {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((username == null) ? 0 : username.hashCode());
         return result;
     }
 
@@ -140,10 +178,10 @@ public class AuthUser {
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (email == null) {
-            if (other.email != null)
+        if (username == null) {
+            if (other.username != null)
                 return false;
-        } else if (!email.equals(other.email))
+        } else if (!username.equals(other.username))
             return false;
         return true;
     }

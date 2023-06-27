@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mukund.mvcsecurity.dto.AuthUserDTO;
-import com.mukund.mvcsecurity.entity.AuthUser;
 import com.mukund.mvcsecurity.service.AuthUserDetailsService;
 import com.mukund.mvcsecurity.service.implementation.AuthUserDetailsServiceImpl;
 
@@ -40,24 +39,24 @@ public class UserRestController {
     }
 
     @GetMapping
-    public List<AuthUser> getUsers() {
-        return authUserDetailsService.findAllUsers();
+    public List<AuthUserDTO.GetConciseUserDTO> getUsers() {
+        return authUserDetailsService.findAllUsers().stream().map(AuthUserDTO.GetConciseUserDTO::new).toList();
     }
 
     @PostMapping
-    public AuthUser createUser(@Valid @RequestBody AuthUserDTO.CreateUserDTO authuserDTO) {
-        return authUserDetailsService.createUser(authuserDTO);
+    public AuthUserDTO.GetUserDTO createUser(@Valid @RequestBody AuthUserDTO.CreateUserDTO authuserDTO) {
+        return new AuthUserDTO.GetUserDTO(authUserDetailsService.createUser(authuserDTO));
     }
 
     @GetMapping("/{id}")
-    public AuthUser getUser(@PathVariable(name = "id", required = true) UUID id) {
-        return authUserDetailsService.getUserByID(id);
+    public AuthUserDTO.GetUserDTO getUser(@PathVariable(name = "id", required = true) UUID id) {
+        return new AuthUserDTO.GetUserDTO(authUserDetailsService.getUserByID(id));
     }
 
     @PutMapping("/{id}")
-    public AuthUser updateUser(@PathVariable(name = "id", required = true) UUID id,
+    public AuthUserDTO.GetUserDTO updateUser(@PathVariable(name = "id", required = true) UUID id,
             @Valid @RequestBody AuthUserDTO.UpdateUserDTO authUserDTO) {
-        return authUserDetailsService.updateUser(id, authUserDTO);
+        return new AuthUserDTO.GetUserDTO(authUserDetailsService.updateUser(id, authUserDTO));
     }
 
     @DeleteMapping("/{id}")

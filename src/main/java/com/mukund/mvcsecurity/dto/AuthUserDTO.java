@@ -1,7 +1,10 @@
 package com.mukund.mvcsecurity.dto;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.mukund.mvcsecurity.model.AuthUserDetails;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +17,31 @@ import jakarta.validation.constraints.NotNull;
  * @author MukundBhardwaj
  */
 public final class AuthUserDTO {
+
+        public static record GetConciseUserDTO(
+
+                        UUID id,
+                        String name) {
+                public GetConciseUserDTO(AuthUserDetails authUser) {
+                        this(authUser.getId(), authUser.getName());
+                }
+
+        }
+
+        public static record GetUserDTO(
+
+                        UUID id,
+                        String name,
+                        String email,
+                        String role,
+                        Boolean active) {
+                public GetUserDTO(AuthUserDetails authUser) {
+                        this(authUser.getId(), authUser.getName(), authUser.getUsername(), authUser.getRole(),
+                                        authUser.isEnabled());
+                }
+
+        }
+
         public static record CreateUserDTO(
 
                         @NotEmpty(message = "name cannot be empty") String name,

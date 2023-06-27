@@ -11,7 +11,7 @@ import com.mukund.mvcsecurity.dao.AuthUserRepository;
 import com.mukund.mvcsecurity.dto.AuthUserDTO;
 import com.mukund.mvcsecurity.entity.AuthUser;
 import com.mukund.mvcsecurity.exceptionhandler.ResourceNotFoundException;
-import com.mukund.mvcsecurity.model.PrincipalUser;
+import com.mukund.mvcsecurity.model.AuthUserDetails;
 import com.mukund.mvcsecurity.service.AuthUserDetailsService;
 
 @Service
@@ -31,31 +31,31 @@ public class AuthUserDetailsServiceImpl implements AuthUserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new PrincipalUser(authUserRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " doesn't exist")));
+        return authUserRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " doesn't exist"));
     }
 
-    public AuthUser createUser(AuthUserDTO.CreateUserDTO authUserDTO) {
+    public AuthUserDetails createUser(AuthUserDTO.CreateUserDTO authUserDTO) {
         return authUserRepository
                 .save(new AuthUser(null, authUserDTO.name(), authUserDTO.email(), authUserDTO.password(), "ROLE_USER",
                         authUserDTO.active()));
     }
 
-    public List<AuthUser> findAllUsers() {
+    public List<? extends AuthUserDetails> findAllUsers() {
         return authUserRepository.findAll();
     }
 
-    public AuthUser getUserByID(UUID id) throws ResourceNotFoundException {
+    public AuthUserDetails getUserByID(UUID id) throws ResourceNotFoundException {
         return authUserRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with ID - " + id + " not found"));
     }
 
-    public AuthUser updateUser(UUID id, AuthUserDTO.UpdateUserDTO authUserDTO) throws ResourceNotFoundException {
+    public AuthUserDetails updateUser(UUID id, AuthUserDTO.UpdateUserDTO authUserDTO) throws ResourceNotFoundException {
         AuthUser authUser = authUserRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with ID - " + id + " not found"));
         authUser.setName(authUserDTO.name());
         authUser.setPassword(authUserDTO.password());
-        authUser.setActive(authUserDTO.active());
+        authUser.setEnabled(authUserDTO.active());
         return authUserRepository.save(authUser);
     }
 
