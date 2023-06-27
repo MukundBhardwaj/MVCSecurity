@@ -1,32 +1,24 @@
 package com.mukund.mvcsecurity.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
-import com.mukund.mvcsecurity.dao.AuthUserRepository;
-import com.mukund.mvcsecurity.model.PrincipalUser;
+import com.mukund.mvcsecurity.dto.AuthUserDTO;
+import com.mukund.mvcsecurity.entity.AuthUser;
+import com.mukund.mvcsecurity.exceptionhandler.ResourceNotFoundException;
 
-@Service
-/**
- * Service class for AuthUser
- * 
- * @since 1.0
- * @author Mukund Bhardwaj
- */
-public class AuthUserDetailsService implements UserDetailsService {
+public interface AuthUserDetailsService extends UserDetailsService {
 
-    private AuthUserRepository authUserRepository;
+    public List<AuthUser> findAllUsers();
 
-    public AuthUserDetailsService(AuthUserRepository authUserRepository) {
-        this.authUserRepository = authUserRepository;
-    }
+    public AuthUser createUser(AuthUserDTO.CreateUserDTO authUserDTO);
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new PrincipalUser(authUserRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " doesn't exist")));
-    }
+    public AuthUser getUserByID(UUID id) throws ResourceNotFoundException;
+
+    public AuthUser updateUser(UUID id, AuthUserDTO.UpdateUserDTO authUserDTO) throws ResourceNotFoundException;
+
+    public void deleteUserByID(UUID id) throws ResourceNotFoundException;
 
 }
