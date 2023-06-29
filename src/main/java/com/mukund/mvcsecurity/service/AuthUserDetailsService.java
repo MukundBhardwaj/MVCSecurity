@@ -3,7 +3,6 @@ package com.mukund.mvcsecurity.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -24,9 +23,9 @@ public interface AuthUserDetailsService extends UserDetailsService {
      * Method to get user by username
      * 
      * @param username username for user to load
-     * @return {@code UserDetails}
+     * @return {@code AuthUserDetails}
      */
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+    public AuthUserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
     /**
      * Method to get all the list of users

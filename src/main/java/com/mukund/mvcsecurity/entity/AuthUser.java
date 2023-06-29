@@ -140,8 +140,7 @@ public class AuthUser implements AuthUserDetails {
     public AuthUser() {
     }
 
-    public AuthUser(UUID id, String name, String email, String password, String role, Boolean active) {
-        this.id = id;
+    public AuthUser(String name, String email, String password, String role, Boolean active) {
         this.name = name;
         this.username = email;
         this.password = password;
